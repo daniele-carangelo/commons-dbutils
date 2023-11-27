@@ -52,7 +52,7 @@ Apache Commons DbUtils
 
 The Apache Commons DbUtils package is a set of Java utility classes for easing JDBC development.
 
-Fork by [daniele-carangelo](https://github.com/daniele-carangelo)
+Forked by [daniele-carangelo](https://github.com/daniele-carangelo)
 
 Documentation
 -------------
