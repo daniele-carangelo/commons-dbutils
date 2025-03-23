@@ -287,21 +287,22 @@
     <pluginManagement>
       <plugins>
 
+        <!--
+              <plugin>
+             <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-checkstyle-plugin</artifactId>
+                          <version>${commons.checkstyle-plugin.version}</version>
+                          <configuration>
+                            <configLocation>${checkstyle.config.file}</configLocation>
+                            <enableRulesSummary>false</enableRulesSummary>
+                            <headerLocation>${checkstyle.header.file}</headerLocation>
+                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+        <suppressionsLocation>${basedir}/src/conf/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+        <suppressionsFileExpression>${basedir}/src/conf/checkstyle/checkstyle-suppressions.xml</suppressionsFileExpression>
+      </configuration>
+    </plugin>
+    -->
 
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>${commons.checkstyle-plugin.version}</version>
-          <configuration>
-            <configLocation>${checkstyle.config.file}</configLocation>
-            <enableRulesSummary>false</enableRulesSummary>
-            <headerLocation>${checkstyle.header.file}</headerLocation>
-            <includeTestSourceDirectory>true</includeTestSourceDirectory> <!-- TODO -->
-            <suppressionsLocation>${basedir}/src/conf/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-            <suppressionsFileExpression>${basedir}/src/conf/checkstyle/checkstyle-suppressions.xml</suppressionsFileExpression>
-          </configuration>
-        </plugin>
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
