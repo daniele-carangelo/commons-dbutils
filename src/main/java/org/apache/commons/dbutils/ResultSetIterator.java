@@ -19,6 +19,7 @@ package org.apache.commons.dbutils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * <p>
@@ -99,7 +100,9 @@ public class ResultSetIterator implements Iterator<Object[]> {
     @Override
     public Object[] next() {
         try {
-            resultSet.next();
+            if (!resultSet.next()) {
+                throw new NoSuchElementException("No more elements in the ResultSet");
+            }
             return this.convert.toArray(resultSet);
         } catch (final SQLException e) {
             rethrow(e);

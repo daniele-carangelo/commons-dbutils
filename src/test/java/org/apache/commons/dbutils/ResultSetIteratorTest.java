@@ -23,11 +23,15 @@ import java.sql.SQLException;
 import java.util.Iterator;
 
 import org.junit.Test;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
 
 /**
  * ResultSetIteratorTest
  */
 public class ResultSetIteratorTest extends BaseTestCase {
+
 
     @Test
     public void testCreatesResultSetIteratorTakingThreeArgumentsAndCallsRemove() {
@@ -37,6 +41,7 @@ public class ResultSetIteratorTest extends BaseTestCase {
         resultSetIterator.remove();
 
     }
+
 
     public void testNext() {
 

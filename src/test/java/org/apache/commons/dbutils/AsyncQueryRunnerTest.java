@@ -43,8 +43,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.openjdk.jmh.annotations.*;
 
+@State(Scope.Benchmark)
 @SuppressWarnings("boxing") // test code
+@Fork(1)
+@Warmup(iterations = 5)
+@Measurement(iterations = 1)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 @RunWith(MockitoJUnitRunner.class)
 public class AsyncQueryRunnerTest {
     private AsyncQueryRunner runner;
@@ -273,6 +280,7 @@ public class AsyncQueryRunnerTest {
     }
 
     @Test
+    @Benchmark
     public void testAddBatchException() throws Exception {
         final String[][] params = { { "unit", "unit" }, { "test", "test" } };
 
@@ -287,6 +295,7 @@ public class AsyncQueryRunnerTest {
         runner = new AsyncQueryRunner(Executors.newFixedThreadPool(1));
         runner.update("update blah set unit = test").get();
     }
+
 
     @Test
     public void testExecuteBatchException() throws Exception {

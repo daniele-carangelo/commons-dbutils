@@ -23,10 +23,13 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.State;
 
 /**
  * BaseTestCase is the base class for all test cases as well as the "all tests" runner.
  */
+
 public class BaseTestCase extends TestCase {
 
     private static final String[] columnNames = { "one", "two", "three", "notInBean", "intTest", "integerTest", "nullObjectTest", "nullPrimitiveTest",
