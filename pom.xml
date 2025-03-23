@@ -394,6 +394,7 @@
           </reportSet>
         </reportSets>
       </plugin>
+      <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -405,7 +406,7 @@
           <suppressionsFileExpression>${basedir}/src/site/resources/checkstyle/checkstyle-suppressions.xml</suppressionsFileExpression>
         </configuration>
       </plugin>
-
+-->
 
       <plugin>
         <groupId>com.github.spotbugs</groupId>
