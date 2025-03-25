@@ -16,13 +16,9 @@
  */
 package org.apache.commons.dbutils;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.sql.Connection;
 import java.sql.ParameterMetaData;
@@ -48,10 +44,10 @@ import org.openjdk.jmh.annotations.*;
 @State(Scope.Benchmark)
 @SuppressWarnings("boxing") // test code
 @Fork(1)
-@Warmup(iterations = 5)
-@Measurement(iterations = 1)
+@Warmup(iterations = 1)
+@Measurement(iterations = 5)
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 @RunWith(MockitoJUnitRunner.class)
 public class AsyncQueryRunnerTest {
     private AsyncQueryRunner runner;
@@ -275,8 +271,9 @@ public class AsyncQueryRunnerTest {
 
         when(results.next()).thenReturn(false);
 
-         handler = new ArrayHandler();
-         runner = new AsyncQueryRunner(Executors.newFixedThreadPool(1), new QueryRunner(dataSource));
+        // Mock the parameter count for the PreparedStatement
+        handler = new ArrayHandler();
+        runner = new AsyncQueryRunner(Executors.newFixedThreadPool(1), new QueryRunner(dataSource));
     }
 
     @Test
@@ -496,4 +493,5 @@ public class AsyncQueryRunnerTest {
     public void testTooManyParamsUpdate() throws Exception {
         callUpdateWithException("unit", "test", "fail");
     }
+
 }

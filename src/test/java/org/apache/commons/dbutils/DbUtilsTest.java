@@ -29,11 +29,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.openjdk.jmh.annotations.*;
 
+@State(Scope.Benchmark)
+@SuppressWarnings("boxing") // test code
+@Fork(1)
+@Warmup(iterations = 1)
+@Measurement(iterations = 5)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+@RunWith(MockitoJUnitRunner.class)
 public class DbUtilsTest {
 
     public static class DriverProxyTest {
@@ -178,6 +190,7 @@ public class DbUtilsTest {
     }
 
     @Test
+    @Benchmark
     public void testCloseQuietlyResultSetThrowingException() throws Exception {
         final ResultSet mockResultSet = mock(ResultSet.class);
         doThrow(SQLException.class).when(mockResultSet).close();

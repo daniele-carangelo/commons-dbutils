@@ -16,13 +16,16 @@
  */
 package org.apache.commons.dbutils;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 import org.junit.Test;
+
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public final class BaseResultSetHandlerTest extends BaseTestCase {
 
@@ -66,6 +69,76 @@ public final class BaseResultSetHandlerTest extends BaseTestCase {
             assertTrue(current.containsKey("notDate"));
             assertTrue(current.containsKey("columnProcessorDoubleTest"));
         }
+    }
+
+    @Test
+    public void testHandleShouldReturnEmptyCollectionWhenResultSetIsEmpty() throws SQLException {
+        ResultSet resultSet = mock(ResultSet.class);
+        when(resultSet.next()).thenReturn(false);
+
+        ToMapCollectionHandler handler = new ToMapCollectionHandler();
+        Collection<Map<String, Object>> result = handler.handle(resultSet);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testHandleShouldThrowSQLExceptionWhenResultSetThrowsSQLException() throws SQLException {
+        ResultSet resultSet = mock(ResultSet.class);
+        when(resultSet.next()).thenThrow(new SQLException());
+
+        ToMapCollectionHandler handler = new ToMapCollectionHandler();
+
+        assertThrows(SQLException.class, () -> handler.handle(resultSet));
+    }
+
+    @Test
+    public void testHandleShouldReturnCorrectDataWhenResultSetHasData() throws SQLException {
+        ResultSet resultSet = mock(ResultSet.class);
+        ResultSetMetaData metaData = mock(ResultSetMetaData.class);
+
+        when(resultSet.next()).thenReturn(true, false);
+        when(resultSet.getMetaData()).thenReturn(metaData);
+        when(metaData.getColumnCount()).thenReturn(2);
+        when(metaData.getColumnName(1)).thenReturn("column1");
+        when(metaData.getColumnName(2)).thenReturn("column2");
+        when(resultSet.getObject(1)).thenReturn("value1");
+        when(resultSet.getObject(2)).thenReturn("value2");
+
+        ToMapCollectionHandler handler = new ToMapCollectionHandler();
+        Collection<Map<String, Object>> result = handler.handle(resultSet);
+
+        assertFalse(result.isEmpty());
+        Map<String, Object> row = result.iterator().next();
+        assertEquals("value1", row.get("column1"));
+        assertEquals("value2", row.get("column2"));
+    }
+
+    @Test
+    public void testHandleShouldReturnMultipleRowsWhenResultSetHasMultipleRows() throws SQLException {
+        ResultSet resultSet = mock(ResultSet.class);
+        ResultSetMetaData metaData = mock(ResultSetMetaData.class);
+
+        when(resultSet.next()).thenReturn(true, true, false);
+        when(resultSet.getMetaData()).thenReturn(metaData);
+        when(metaData.getColumnCount()).thenReturn(2);
+        when(metaData.getColumnName(1)).thenReturn("column1");
+        when(metaData.getColumnName(2)).thenReturn("column2");
+        when(resultSet.getObject(1)).thenReturn("value1", "value3");
+        when(resultSet.getObject(2)).thenReturn("value2", "value4");
+
+        ToMapCollectionHandler handler = new ToMapCollectionHandler();
+        Collection<Map<String, Object>> result = handler.handle(resultSet);
+
+        assertEquals(2, result.size());
+        Iterator<Map<String, Object>> iterator = result.iterator();
+        Map<String, Object> firstRow = iterator.next();
+        Map<String, Object> secondRow = iterator.next();
+
+        assertEquals("value1", firstRow.get("column1"));
+        assertEquals("value2", firstRow.get("column2"));
+        assertEquals("value3", secondRow.get("column1"));
+        assertEquals("value4", secondRow.get("column2"));
     }
 
 }

@@ -16,11 +16,8 @@
  */
 package org.apache.commons.dbutils;
 
-public class BenchmarkTesting {
-
+public class testDockerImage {
     public static void main(String[] args) throws Exception {
-        org.openjdk.jmh.Main.main(args);
-
-
+        System.out.println("Hello, Docker!");
     }
 }
