@@ -294,7 +294,7 @@
           <configuration>
             <archive>
               <manifest>
-                <mainClass>org.apache.commons.dbutils.testDockerImage</mainClass>
+                <mainClass>org.apache.commons.dbutils.TestDockerImage</mainClass>
               </manifest>
             </archive>
           </configuration>

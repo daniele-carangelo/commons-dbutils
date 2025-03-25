@@ -16,7 +16,7 @@
  */
 package org.apache.commons.dbutils;
 
-public class testDockerImage {
+public class TestDockerImage {
     public static void main(String[] args) throws Exception {
         System.out.println("Hello, Docker!");
     }
